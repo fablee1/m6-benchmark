@@ -26,10 +26,6 @@ const ProductModel = (sequelize, DataTypes) => {
       type: DataTypes.FLOAT,
       allowNull: false,
     },
-    category: {
-      type: DataTypes.TEXT,
-      allowNull: true,
-    },
   })
   return Product
 }

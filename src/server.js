@@ -1,6 +1,5 @@
 import express from "express"
 import cors from "cors"
-import createError from "http-errors"
 import morgan from "morgan"
 
 import db from "./db/index.js"

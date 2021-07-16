@@ -2,12 +2,19 @@ import models from "../db/index.js"
 
 const Product = models.Product
 const Review = models.Review
+const Category = models.Category
 
 const getAllProducts = async (req, res, next) => {
   try {
     const page = req.query.page - 1 || 0
     const limit = 10
-    const products = await Product.findAll({ limit: limit, offset: page * limit })
+
+    const products = await Product.findAll({
+      limit: limit,
+      offset: page * limit,
+      where: req.query.category ? { "$category.category$": req.query.category } : {},
+      include: [{ model: Category }],
+    })
     res.send(products)
   } catch (error) {
     next(error)
