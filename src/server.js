@@ -3,30 +3,26 @@ import cors from "cors"
 import createError from "http-errors"
 import morgan from "morgan"
 
+import db from "./db/index.js"
+import services from "./services/index.js"
+import corsOptions from "./config/cors.js"
+
 const port = process.env.PORT || 3001
 const server = express()
 
-const whitelist = [process.env.FRONTEND_URL, process.env.FRONTEND_PROD_URL]
-
-server.use(
-  cors({
-    origin: (origin, callback) => {
-      if (!origin || whitelist.indexOf(origin) !== -1) {
-        callback(null, true)
-      } else {
-        callback(new Error("Not allowed by cors!"))
-      }
-    },
-  })
-)
+server.use(cors(corsOptions))
 
 server.use(express.json())
 server.use(morgan("dev"))
 
+server.use("/api", services)
+
 db.sequelize
   .sync({ alter: true })
   .then(() => {
-    app.listen(port, () => console.log("Server is running on port " + port))
-    app.on("error", (error) => console.info(" ❌ Server is not running due to: ", error))
+    server.listen(port, () => console.log("Server is running on port " + port))
+    server.on("error", (error) =>
+      console.info(" ❌ Server is not running due to: ", error)
+    )
   })
   .catch((e) => console.log(e))

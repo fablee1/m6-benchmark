@@ -33,3 +33,5 @@ const ProductModel = (sequelize, DataTypes) => {
   })
   return Product
 }
+
+export default ProductModel
