@@ -5,7 +5,9 @@ const Review = models.Review
 
 const getAllProducts = async (req, res, next) => {
   try {
-    const products = await Product.findAll()
+    const page = req.query.page - 1 || 0
+    const limit = 10
+    const products = await Product.findAll({ limit: limit, offset: page * limit })
     res.send(products)
   } catch (error) {
     next(error)

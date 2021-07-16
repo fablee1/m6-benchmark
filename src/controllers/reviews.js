@@ -4,7 +4,9 @@ const Review = models.Review
 
 const getAllReviews = async (req, res, next) => {
   try {
-    const review = await Review.findAll()
+    const page = req.query.page - 1 || 0
+    const limit = 100
+    const review = await Review.findAll({ limit: limit, offset: page * limit })
     res.send(review)
   } catch (error) {
     next(error)
